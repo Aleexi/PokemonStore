@@ -1,4 +1,4 @@
-﻿namespace PokemonService.Entities;
+﻿namespace PokemonService;
 
 public enum TypeEnum
 {
@@ -19,6 +19,7 @@ public enum TypeEnum
     Dragon,
     Dark,
     Steel,
-    Fairy
+    Fairy,
+    All
 
 }

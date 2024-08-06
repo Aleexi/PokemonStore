@@ -1,0 +1,11 @@
+services:
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=pokemons-db
+    ports:
+      - 5432:5432
+    volumes:
+      - /var/lib/postgres/data
