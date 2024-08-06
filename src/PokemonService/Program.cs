@@ -12,12 +12,27 @@ builder.Services.AddDbContext<PokemonDbContext>(options => {
 builder.Services.AddScoped<IPokemonRepository, PokemonRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-/*
 builder.Services.AddMassTransit(x => {
-    // Fill this out for RabbitMQ
-});
-*/
 
+    // Set prefix for all queues/exchanges, full name is pokemon-service + consumer
+    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("pokemonservice", false));
+
+    x.UsingRabbitMq((context, config) => {
+        // If RabbitMQ server doesn't respond, use message retry, 5 times with 10 seconds interval to try to connect
+        config.UseMessageRetry(retry => {
+            retry.Handle<RabbitMqConnectionException>();
+            retry.Interval(5, TimeSpan.FromSeconds(10));
+        });
+        
+        config.Host(builder.Configuration["RabbitMq:Host"], "/", host => 
+        {
+            host.Username(builder.Configuration.GetValue("RabbitMq:Username", "hej"));
+            host.Password(builder.Configuration.GetValue("RabbitMq:Password", "hej"));
+        });
+
+        config.ConfigureEndpoints(context);
+    });
+});
 
 var app = builder.Build();
 

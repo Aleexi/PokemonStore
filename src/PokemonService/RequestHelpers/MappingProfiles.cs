@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Contracts;
 
 namespace PokemonService.RequestHelpers;
 
@@ -20,5 +21,9 @@ public class MappingProfiles : Profile
         // Mapping between AttackDTO and Attack
         CreateMap<AttackDTO, Attack>();
 
+        /* Mapping profiles for Contracts */ 
+        CreateMap<Pokemon, PokemonCreated>();
+        CreateMap<Pokemon, PokemonUpdated>();
+        CreateMap<Pokemon, PokemonDeleted>();
     }
 }

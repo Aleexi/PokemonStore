@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using MassTransit.Futures.Contracts;
-using Microsoft.AspNetCore.Authorization;
+using Contracts;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace PokemonService;
 
@@ -11,11 +12,13 @@ public class PokemonsController : ControllerBase
 {
     private readonly IPokemonRepository _pokemonRepository;
     private readonly IMapper _mapper;
+    private readonly IPublishEndpoint _publishEndpoint;
 
-    public PokemonsController(IPokemonRepository pokemonRepository, IMapper mapper)
+    public PokemonsController(IPokemonRepository pokemonRepository, IMapper mapper, IPublishEndpoint publishEndpoint)
     {
         _pokemonRepository = pokemonRepository;
         _mapper = mapper;
+        _publishEndpoint = publishEndpoint;
     }
 
     [HttpGet]
@@ -57,8 +60,7 @@ public class PokemonsController : ControllerBase
 
         if (!successfull) return BadRequest("Couldn't create pokemon...");
 
-        // Publish to RabbitMQ bus an PokemonCreated Event emitt!
-        // ...
+        await _publishEndpoint.Publish(_mapper.Map<PokemonCreated>(pokemon));
 
         return CreatedAtAction(nameof(GetPokemonById), new {pokemon.Id}, _mapper.Map<PokemonDTO>(pokemon));
     }
@@ -77,8 +79,7 @@ public class PokemonsController : ControllerBase
 
         if (!successfull) return BadRequest("Couldn't update pokemon...");
 
-        // Publish to RabbitMQ UpdatePokemon Event emitt!
-        // ...
+        await _publishEndpoint.Publish(_mapper.Map<PokemonUpdated>(pokemon));
 
         return Ok(_mapper.Map<PokemonDTO>(pokemon));
     }
@@ -97,8 +98,7 @@ public class PokemonsController : ControllerBase
 
         if (!successfull) return BadRequest("Failed to remove pokemon entity from database...");
 
-        // Publish to RabbitMQ deletePokemon Event emitt!
-        // ...
+        await _publishEndpoint.Publish(_mapper.Map<PokemonDeleted>(pokemon));
 
         return Ok();
     }

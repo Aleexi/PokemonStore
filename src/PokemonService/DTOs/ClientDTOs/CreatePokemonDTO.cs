@@ -18,7 +18,7 @@ public class CreatePokemonDTO
     [Required]
     public bool Holographic { get; set; } 
     [Required]
-    public List<AttackDTO> Attacks { get; set; }
-    [Required]
     public string ImageUrl { get; set; }
+    [Required]
+    public List<AttackDTO> Attacks { get; set; }
 }

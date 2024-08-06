@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace PokemonService;
+﻿namespace PokemonService;
 
 public class Pokemon
 {
