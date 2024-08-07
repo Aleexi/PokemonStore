@@ -2,7 +2,7 @@
 
 namespace PokemonService;
 
-public class CreatePokemonDTO
+public class CreatePokemonDto
 {
     [Required]
     public string Name { get; set; }
@@ -20,5 +20,5 @@ public class CreatePokemonDTO
     [Required]
     public string ImageUrl { get; set; }
     [Required]
-    public List<AttackDTO> Attacks { get; set; }
+    public List<AttackDto> Attacks { get; set; }
 }

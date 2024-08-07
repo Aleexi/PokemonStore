@@ -1,6 +1,6 @@
 ﻿namespace PokemonService;
 
-public class PokemonDTO
+public class PokemonDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
@@ -10,7 +10,7 @@ public class PokemonDTO
     public int HealthPower { get; set; }
     public string Rarity { get; set; }
     public bool Holographic { get; set; } 
-    public List<AttackDTO> Attacks { get; set; }
+    public List<AttackDto> Attacks { get; set; }
     public DateTime CreatedAt { get; set; }
     public string ImageUrl { get; set; }
 }

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace PokemonService;
+﻿namespace PokemonService;
 
 public class Attack
 {
@@ -9,7 +7,7 @@ public class Attack
     public int Damage { get; set; }
     
 
-    // Navigation Properties for 1-to-1 relationship to Pokemon
+    // Navigation Properties for 1-to-many relationship to Pokemon
     public Pokemon Pokemon { get; set; }
     public Guid PokemonId { get; set; }
 }

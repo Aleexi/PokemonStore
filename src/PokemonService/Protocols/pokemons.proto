@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option csharp_namespace = "PokemonService";
+
+// The pokemons service definition.
+service GrcpPokemon {
+    rpc GetPokemons (PokemonsRequest) returns (PokemonsResponse) {}
+}
+
+// The request message containing the date for which pokemons after to retrieve
+message PokemonsRequest {
+    string date = 1;
+}
+
+message PokemonModel {
+    string name = 1;
+    string seller = 2;
+    int32 price = 3;
+    string type = 4;
+    int32 healthpower = 5;
+    string rarity = 6;
+    bool holographic = 7;
+    string createdAt = 8; // Need to map this to a string and back to a DateTime in corresponding services that receive this response
+    string imageurl = 9;
+}
+
+message PokemonsResponse {
+    repeated PokemonModel pokemons = 1;
+}

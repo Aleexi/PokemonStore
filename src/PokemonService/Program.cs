@@ -10,9 +10,12 @@ builder.Services.AddDbContext<PokemonDbContext>(options => {
 });
 
 builder.Services.AddScoped<IPokemonRepository, PokemonRepository>();
+builder.Services.AddGrpc();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+
 builder.Services.AddMassTransit(x => {
+    // Add consumer 
 
     // Set prefix for all queues/exchanges, full name is pokemon-service + consumer
     x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("pokemonservice", false));

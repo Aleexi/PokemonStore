@@ -22,7 +22,7 @@ public class PokemonsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<PokemonDTO>>> GetPokemons()
+    public async Task<ActionResult<List<PokemonDto>>> GetPokemons()
     {
        var pokemons = await _pokemonRepository.GetPokemonsAsync();
 
@@ -32,7 +32,7 @@ public class PokemonsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<PokemonDTO>> GetPokemonById(Guid id)
+    public async Task<ActionResult<PokemonDto>> GetPokemonById(Guid id)
     {
         var pokemon = await _pokemonRepository.GetPokemonByIdAsync(id);
 
@@ -43,9 +43,9 @@ public class PokemonsController : ControllerBase
 
     // [Authorize]
     [HttpPost]
-    public async Task<ActionResult<PokemonDTO>> AddPokemon([FromBody] CreatePokemonDTO createPokemonDTO)
+    public async Task<ActionResult<PokemonDto>> AddPokemon([FromBody] CreatePokemonDto createPokemonDto)
     {
-        var pokemon = _mapper.Map<Pokemon>(createPokemonDTO);
+        var pokemon = _mapper.Map<Pokemon>(createPokemonDto);
 
         pokemon.Id = Guid.NewGuid();
 
@@ -62,18 +62,18 @@ public class PokemonsController : ControllerBase
 
         await _publishEndpoint.Publish(_mapper.Map<PokemonCreated>(pokemon));
 
-        return CreatedAtAction(nameof(GetPokemonById), new {pokemon.Id}, _mapper.Map<PokemonDTO>(pokemon));
+        return CreatedAtAction(nameof(GetPokemonById), new {pokemon.Id}, _mapper.Map<PokemonDto>(pokemon));
     }
 
     // [Authorize]
     [HttpPut("{id}")]
-    public async Task<ActionResult<PokemonDTO>> UpdatePokemon([FromBody] UpdatePokemonDTO updatePokemonDTO, Guid id)
+    public async Task<ActionResult<PokemonDto>> UpdatePokemon([FromBody] UpdatePokemonDto updatePokemonDto, Guid id)
     {
         var pokemon = await _pokemonRepository.GetPokemonEntiytByIdAsync(id);
 
         if (pokemon == null) return NotFound();
 
-        pokemon.Price = updatePokemonDTO.Price > 0 ? updatePokemonDTO.Price : pokemon.Price;
+        pokemon.Price = updatePokemonDto.Price > 0 ? updatePokemonDto.Price : pokemon.Price;
 
         var successfull = await _pokemonRepository.SaveChangesAsync();
 
@@ -81,7 +81,7 @@ public class PokemonsController : ControllerBase
 
         await _publishEndpoint.Publish(_mapper.Map<PokemonUpdated>(pokemon));
 
-        return Ok(_mapper.Map<PokemonDTO>(pokemon));
+        return Ok(_mapper.Map<PokemonDto>(pokemon));
     }
 
     // [Authorize]

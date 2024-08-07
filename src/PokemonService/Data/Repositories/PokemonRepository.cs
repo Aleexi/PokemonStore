@@ -15,11 +15,11 @@ public class PokemonRepository : IPokemonRepository
         _mapper = mapper;
     }
 
-    public async Task<PokemonDTO> GetPokemonByIdAsync(Guid id)
+    public async Task<PokemonDto> GetPokemonByIdAsync(Guid id)
     {
         var pokemon = await _pokemonDbContext.Pokemons.Include(x => x.Attacks).FirstOrDefaultAsync(x => x.Id == id);
 
-        return _mapper.Map<PokemonDTO>(pokemon);
+        return _mapper.Map<PokemonDto>(pokemon);
     }
 
     public async Task<Pokemon> GetPokemonEntiytByIdAsync(Guid id)
@@ -27,11 +27,11 @@ public class PokemonRepository : IPokemonRepository
         return await _pokemonDbContext.Pokemons.Include(x => x.Attacks).FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<PokemonDTO>> GetPokemonsAsync()
+    public async Task<List<PokemonDto>> GetPokemonsAsync()
     {
         var pokemons = await _pokemonDbContext.Pokemons.Include(x => x.Attacks).ToListAsync();
 
-        return pokemons.Select(_mapper.Map<PokemonDTO>).ToList();
+        return pokemons.Select(_mapper.Map<PokemonDto>).ToList();
     }
 
     public void AddPokemon(Pokemon pokemon)
@@ -48,5 +48,10 @@ public class PokemonRepository : IPokemonRepository
     public async Task<bool> SaveChangesAsync()
     {
         return await _pokemonDbContext.SaveChangesAsync() > 0;
+    }
+
+    public async Task<List<Pokemon>> GetPokemonsAfterDate(string date)
+    {
+        return await _pokemonDbContext.Pokemons.Include(x => x.Attacks).Where(x => x.CreatedAt > DateTime.Parse(date)).ToListAsync();
     }
 }

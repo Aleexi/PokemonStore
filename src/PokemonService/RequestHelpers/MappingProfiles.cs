@@ -8,18 +8,18 @@ public class MappingProfiles : Profile
     public MappingProfiles()
     {
         // Map Attack to AttackDTO
-        CreateMap<Attack, AttackDTO>();
+        CreateMap<Attack, AttackDto>();
 
-        // Map Pokemon to PokemonDTO, and tell automapper how to map attacks
-        CreateMap<Pokemon, PokemonDTO>()
+        // Map Pokemon to PokemonDto, and tell automapper how to map attacks
+        CreateMap<Pokemon, PokemonDto>()
             .ForMember(dest => dest.Attacks, opt => opt.MapFrom(src => src.Attacks));
 
-        // Mapping between CreatePokemonDTO and Pokemon
-        CreateMap<CreatePokemonDTO, Pokemon>()
+        // Mapping between CreatePokemonDto and Pokemon
+        CreateMap<CreatePokemonDto, Pokemon>()
             .ForMember(dest => dest.Attacks, opt => opt.MapFrom(src => src.Attacks));
 
-        // Mapping between AttackDTO and Attack
-        CreateMap<AttackDTO, Attack>();
+        // Mapping between AttackDto and Attack
+        CreateMap<AttackDto, Attack>();
 
         /* Mapping profiles for Contracts */ 
         CreateMap<Pokemon, PokemonCreated>();
