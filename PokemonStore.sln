@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonService", "src\Pokem
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "src\Contracts\Contracts.csproj", "{07BCD246-DEF6-4A45-B221-86365A2EF58E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchService", "src\SearchService\SearchService.csproj", "{48D2F129-035C-4185-8169-53FABB8FAEBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,9 +28,14 @@ Global
 		{07BCD246-DEF6-4A45-B221-86365A2EF58E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07BCD246-DEF6-4A45-B221-86365A2EF58E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07BCD246-DEF6-4A45-B221-86365A2EF58E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48D2F129-035C-4185-8169-53FABB8FAEBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48D2F129-035C-4185-8169-53FABB8FAEBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48D2F129-035C-4185-8169-53FABB8FAEBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48D2F129-035C-4185-8169-53FABB8FAEBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{05DBD790-A844-4B9A-914D-2FA9514B2D94} = {E003BD24-7784-4542-B8BE-0F5E24092F2A}
 		{07BCD246-DEF6-4A45-B221-86365A2EF58E} = {E003BD24-7784-4542-B8BE-0F5E24092F2A}
+		{48D2F129-035C-4185-8169-53FABB8FAEBB} = {E003BD24-7784-4542-B8BE-0F5E24092F2A}
 	EndGlobalSection
 EndGlobal

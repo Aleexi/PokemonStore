@@ -52,6 +52,9 @@ public class PokemonRepository : IPokemonRepository
 
     public async Task<List<Pokemon>> GetPokemonsAfterDate(string date)
     {
+        // If there is no date return all entities in Pokemons 
+        if (date == null) return await _pokemonDbContext.Pokemons.Include(x => x.Attacks).ToListAsync();
+
         return await _pokemonDbContext.Pokemons.Include(x => x.Attacks).Where(x => x.CreatedAt > DateTime.Parse(date)).ToListAsync();
     }
 }

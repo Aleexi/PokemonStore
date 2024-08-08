@@ -22,7 +22,8 @@ public class MappingProfiles : Profile
         CreateMap<AttackDto, Attack>();
 
         /* Mapping profiles for Contracts */ 
-        CreateMap<Pokemon, PokemonCreated>();
+        CreateMap<Pokemon, PokemonCreated>()
+            .ForMember(dest => dest.Attacks, opt => opt.Ignore()); // Ignore Attacks property
         CreateMap<Pokemon, PokemonUpdated>();
         CreateMap<Pokemon, PokemonDeleted>();
     }

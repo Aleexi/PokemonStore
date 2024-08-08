@@ -1,6 +1,7 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using PokemonService;
+using PokemonService.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -8,14 +9,12 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<PokemonDbContext>(options => {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
 builder.Services.AddScoped<IPokemonRepository, PokemonRepository>();
 builder.Services.AddGrpc();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-
 builder.Services.AddMassTransit(x => {
-    // Add consumer 
+    // Add consumer, right now for testing purposes
+    // x.AddConsumersFromNamespaceContaining<PokemonCreatedConsumer>();
 
     // Set prefix for all queues/exchanges, full name is pokemon-service + consumer
     x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("pokemonservice", false));
@@ -29,8 +28,8 @@ builder.Services.AddMassTransit(x => {
         
         config.Host(builder.Configuration["RabbitMq:Host"], "/", host => 
         {
-            host.Username(builder.Configuration.GetValue("RabbitMq:Username", "hej"));
-            host.Password(builder.Configuration.GetValue("RabbitMq:Password", "hej"));
+            host.Username(builder.Configuration.GetValue("RabbitMq:Username", "guest"));
+            host.Password(builder.Configuration.GetValue("RabbitMq:Password", "guest"));
         });
 
         config.ConfigureEndpoints(context);

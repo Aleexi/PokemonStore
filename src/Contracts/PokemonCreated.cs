@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Contracts.PublicClasses;
 
 namespace Contracts;
 
@@ -15,5 +17,5 @@ public class PokemonCreated
     public DateTime CreatedAt { get; set; }
     public string? ImageUrl { get; set; }
 
-    // We don't consider/save attacks in the other services, therefore we omitt sending it in the event
+    public List<AttackContract>? Attacks { get; set; }
 }

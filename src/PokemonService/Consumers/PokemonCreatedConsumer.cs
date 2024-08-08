@@ -11,7 +11,6 @@ public class PokemonCreatedConsumer : IConsumer<PokemonCreated>
         string jsonString = JsonConvert.SerializeObject(context.Message, Formatting.Indented);
         Console.WriteLine($"PokemonService received ==> {jsonString}");
         
-        // Console.WriteLine($"PokemonService received ==> {context.Message.Id}");
         await Task.Delay(1);
     }
 }

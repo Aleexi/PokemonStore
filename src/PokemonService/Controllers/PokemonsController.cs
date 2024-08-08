@@ -1,8 +1,9 @@
-﻿using AutoMapper;
+﻿using System.Text.Json;
+using AutoMapper;
 using Contracts;
+using Contracts.PublicClasses;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace PokemonService;
 
@@ -60,7 +61,18 @@ public class PokemonsController : ControllerBase
 
         if (!successfull) return BadRequest("Couldn't create pokemon...");
 
-        await _publishEndpoint.Publish(_mapper.Map<PokemonCreated>(pokemon));
+        var pokemonCreated = _mapper.Map<PokemonCreated>(pokemon);
+        pokemonCreated.Attacks = new List<AttackContract>();
+
+        // Map Attack properties manually
+        foreach (var attack in pokemon.Attacks) {
+            pokemonCreated.Attacks.Add(new AttackContract{
+                Name = attack.Name,
+                Damage = attack.Damage,
+            });
+        }
+
+        await _publishEndpoint.Publish(pokemonCreated);
 
         return CreatedAtAction(nameof(GetPokemonById), new {pokemon.Id}, _mapper.Map<PokemonDto>(pokemon));
     }
