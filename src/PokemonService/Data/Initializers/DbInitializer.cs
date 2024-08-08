@@ -70,7 +70,7 @@ public class DbInitializer
                     },
                     new Attack
                     {
-                        Name = "Nomral Blast",
+                        Name = "Normal Blast",
                         Damage = 100
                     }
                 },

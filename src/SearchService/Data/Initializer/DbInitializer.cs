@@ -20,6 +20,7 @@ public class DbInitializer
             .Key(x => x.Holographic, KeyType.Text)
             .Key(x => x.Type, KeyType.Text)
             .Key(x => x.Seller, KeyType.Text)
+            .Key(x => x.Name, KeyType.Text)
             .CreateAsync();
 
         var count = await DB.CountAsync<Pokemon>();
@@ -39,6 +40,7 @@ public class DbInitializer
             if (pokemons.Count == 0) return;
 
             await DB.SaveAsync(pokemons);
+            Console.WriteLine("Filled the MongoDb with pokemons");
         } 
     }
 }

@@ -1,8 +1,7 @@
-﻿namespace SearchService.Entities
+﻿namespace SearchService.Entities;
+
+public class Attack
 {
-    public class Attack
-    {
-        public string Name{ get; set; }
-        public int Damage { get; set; }
-    }
+    public string Name{ get; set; }
+    public int Damage { get; set; }
 }

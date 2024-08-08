@@ -23,7 +23,6 @@ public class GrpcSender
     {
         _logger.LogInformation("Starting GrpcSender...");
 
-        //var channel = GrpcChannel.ForAddress(_config.GetValue<string>("PokemonServiceGrpcUrl"));
         var channel = GrpcChannel.ForAddress(_config["PokemonServiceGrpcUrl"]);
         var client = new GrcpPokemon.GrcpPokemonClient(channel);
 
@@ -43,6 +42,7 @@ public class GrpcSender
                 pokemons.Add(new Pokemon
                 {
                     // Id property is managed by the base class and should not be manually assigned
+                    ID = pokemon.Id,
                     Name = pokemon.Name,
                     Price = pokemon.Price,
                     Type = pokemon.Type,
@@ -52,7 +52,7 @@ public class GrpcSender
                     HealthPower = pokemon.Healthpower,
                     Rarity = pokemon.Rarity,
                     ImageUrl = pokemon.Imageurl,
-                    Attacks = pokemon.Attacks.Select(attack => new Attack 
+                    Attacks = pokemon.Attacks.Select(attack => new Attack
                     {
                         Name = attack.Name,
                         Damage = attack.Damage
