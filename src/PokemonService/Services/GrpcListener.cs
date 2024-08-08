@@ -25,6 +25,7 @@ public class GrpcListener : GrcpPokemon.GrcpPokemonBase
         var response = new PokemonsResponse();
 
         response.Pokemons.AddRange(pokemons.Select(pokemon => new PokemonModel {
+            Id = pokemon.Id.ToString(),
             Name = pokemon.Name,
             Seller = pokemon.Seller,
             Price = pokemon.Price,
@@ -34,6 +35,15 @@ public class GrpcListener : GrcpPokemon.GrcpPokemonBase
             Holographic = pokemon.Holographic,
             CreatedAt = pokemon.CreatedAt.ToString(),
             Imageurl = pokemon.ImageUrl,
+            // Use select to transform attack to a AttackModel
+            Attacks = { 
+                // Initialize the repeated field 
+                pokemon.Attacks.Select(attack => new AttackModel
+                {
+                    Name = attack.Name,
+                    Damage = attack.Damage
+                }).ToList()
+            }
         }));
 
         return response;

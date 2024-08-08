@@ -2,7 +2,8 @@ syntax = "proto3";
 
 option csharp_namespace = "PokemonService";
 
-import "google/protobuf/wrappers.proto";
+import "google/protobuf/wrappers.proto"; // Import the wrapper types
+
 
 // The pokemons service definition.
 service GrcpPokemon {

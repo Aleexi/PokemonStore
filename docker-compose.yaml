@@ -21,3 +21,14 @@ services:
       - 15672:15672
     volumes:
       - /var/lib/rabbitmq/data
+
+  mongodb:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - RABBITMQ_DEFAULT_VHOST=/
+    ports:
+      - 27017:27017
+    volumes:
+      - /var/lib/mongodb/data
