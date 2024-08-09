@@ -34,6 +34,7 @@ builder.Services.AddMassTransit(x =>
 
 var app = builder.Build();
 
+// Middleware
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
