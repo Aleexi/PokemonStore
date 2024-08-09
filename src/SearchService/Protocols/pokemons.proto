@@ -8,6 +8,7 @@ import "google/protobuf/wrappers.proto"; // Import the wrapper types
 // The pokemons service definition.
 service GrcpPokemon {
     rpc GetPokemons (PokemonsRequest) returns (PokemonsResponse) {}
+    rpc GetPokemonById (PokemonRequest) returns (PokemonResponse) {}
 }
 
 // The request message containing the date for which pokemons after to retrieve
@@ -36,4 +37,12 @@ message AttackModel {
 
 message PokemonsResponse {
     repeated PokemonModel pokemons = 1;
+}
+
+message PokemonRequest {
+    string id = 1;
+}
+
+message PokemonResponse {
+    PokemonModel pokemon = 1;
 }

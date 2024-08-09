@@ -19,6 +19,46 @@ public class GrpcSender
         _config = config;
         _mapper = mapper;
     }
+    public Pokemon GetPokemon(string id)
+    {
+        _logger.LogInformation("Starting GrpcSender...");
+
+        var channel = GrpcChannel.ForAddress(_config["PokemonServiceGrpcUrl"]);
+        var client = new GrcpPokemon.GrcpPokemonClient(channel);
+
+        var request = new PokemonRequest { Id = id };
+
+        try
+        {
+            var response = client.GetPokemonById(request);
+
+            var pokemon = new Pokemon
+            {
+                ID = response.Pokemon.Id,
+                Name = response.Pokemon.Name,
+                Price = response.Pokemon.Price,
+                Type = response.Pokemon.Type,
+                Holographic = response.Pokemon.Holographic,
+                Seller = response.Pokemon.Seller,
+                CreatedAt = DateTime.Parse(response.Pokemon.CreatedAt),
+                HealthPower = response.Pokemon.Healthpower,
+                Rarity = response.Pokemon.Rarity,
+                ImageUrl = response.Pokemon.Imageurl,
+                Attacks = response.Pokemon.Attacks.Select(attack => new Attack
+                {
+                    Name = attack.Name,
+                    Damage = attack.Damage
+                }).ToList()
+            };
+            return pokemon;
+        }
+        catch (Exception e)
+        {
+
+            throw new Exception("Error retrieving pokemon from Pokemon Service", e);
+        }
+    }
+
     public List<Pokemon> GetPokemons(string date)
     {
         _logger.LogInformation("Starting GrpcSender...");
@@ -41,7 +81,6 @@ public class GrpcSender
             {
                 pokemons.Add(new Pokemon
                 {
-                    // Id property is managed by the base class and should not be manually assigned
                     ID = pokemon.Id,
                     Name = pokemon.Name,
                     Price = pokemon.Price,

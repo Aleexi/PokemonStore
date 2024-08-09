@@ -13,6 +13,42 @@ public class GrpcListener : GrcpPokemon.GrcpPokemonBase
         _pokemonRepository = pokemonRepository;
     }
 
+    public override async Task<PokemonResponse> GetPokemonById(PokemonRequest request, ServerCallContext context)
+    {
+        _logger.LogInformation($"==> Grpc-Server Received Request with id: {request.Id}");
+
+        var pokemon = await _pokemonRepository.GetPokemonByIdAsync(Guid.Parse(request.Id));
+
+        if (pokemon == null) throw new RpcException(new Status(StatusCode.NotFound, "Not Found"));
+
+        // Map pokemons into PokemonsResponse
+        var response = new PokemonResponse
+        {
+            Pokemon = new PokemonModel
+                {
+                    Id = pokemon.Id.ToString(),
+                    Name = pokemon.Name,
+                    Seller = pokemon.Seller,
+                    Price = pokemon.Price,
+                    Type = pokemon.Type.ToString(),
+                    Healthpower = pokemon.HealthPower,
+                    Rarity = pokemon.Rarity.ToString(),
+                    Holographic = pokemon.Holographic,
+                    CreatedAt = pokemon.CreatedAt.ToString(),
+                    Imageurl = pokemon.ImageUrl,
+                    Attacks = { 
+                        // Initialize the repeated field 
+                        pokemon.Attacks.Select(attack => new AttackModel
+                        {
+                            Name = attack.Name,
+                            Damage = attack.Damage
+                        }).ToList()
+                    }
+                }
+        };
+        return response;
+    }
+
     public override async Task<PokemonsResponse> GetPokemons(PokemonsRequest request, ServerCallContext context)
     {
         _logger.LogInformation($"==> Grpc-Server Received Request with date: {request.Date}");
