@@ -9,7 +9,7 @@ namespace SearchService.Consumers
     {
         private readonly ILogger _logger;
 
-        public PokemonDeletedConsumer(ILogger logger)
+        public PokemonDeletedConsumer(ILogger<PokemonDeletedConsumer> logger)
         {
             _logger = logger;
         }

@@ -3,6 +3,8 @@ using AutoMapper;
 using Contracts;
 using Contracts.PublicClasses;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PokemonService;
@@ -15,7 +17,8 @@ public class PokemonsController : ControllerBase
     private readonly IMapper _mapper;
     private readonly IPublishEndpoint _publishEndpoint;
 
-    public PokemonsController(IPokemonRepository pokemonRepository, IMapper mapper, IPublishEndpoint publishEndpoint)
+    public PokemonsController(IPokemonRepository pokemonRepository, IMapper mapper, 
+        IPublishEndpoint publishEndpoint)
     {
         _pokemonRepository = pokemonRepository;
         _mapper = mapper;
@@ -42,11 +45,14 @@ public class PokemonsController : ControllerBase
         return Ok(pokemon);
     }
 
-    // [Authorize]
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<PokemonDto>> AddPokemon([FromBody] CreatePokemonDto createPokemonDto)
     {
         var pokemon = _mapper.Map<Pokemon>(createPokemonDto);
+
+        // Populate pokemon with correct seller through User.Identity
+        pokemon.Seller = User.Identity.Name;
 
         pokemon.Id = Guid.NewGuid();
 
@@ -77,13 +83,16 @@ public class PokemonsController : ControllerBase
         return CreatedAtAction(nameof(GetPokemonById), new {pokemon.Id}, _mapper.Map<PokemonDto>(pokemon));
     }
 
-    // [Authorize]
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<ActionResult<PokemonDto>> UpdatePokemon([FromBody] UpdatePokemonDto updatePokemonDto, Guid id)
     {
         var pokemon = await _pokemonRepository.GetPokemonEntiytByIdAsync(id);
 
         if (pokemon == null) return NotFound();
+
+        // Check that the person updating the pokemon is the person making this request -> same person should only be able to update its own pokemon
+        if (pokemon.Seller != User.Identity.Name) return Forbid();
 
         pokemon.Price = updatePokemonDto.Price > 0 ? updatePokemonDto.Price : pokemon.Price;
 
@@ -96,13 +105,16 @@ public class PokemonsController : ControllerBase
         return Ok(_mapper.Map<PokemonDto>(pokemon));
     }
 
-    // [Authorize]
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeletePokemon(Guid id)
     {
         var pokemon = await _pokemonRepository.GetPokemonEntiytByIdAsync(id);
 
         if (pokemon == null) return NotFound();
+
+        // Check that the person updating the pokemon is the person making this request -> same person should only be able to update its own pokemon
+        if (pokemon.Seller != User.Identity.Name) return Forbid();
 
         _pokemonRepository.RemovePokemon(pokemon);
 

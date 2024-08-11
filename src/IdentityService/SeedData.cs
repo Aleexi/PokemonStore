@@ -38,7 +38,8 @@ public class SeedData
             }
 
             // Add claims to the user
-            result = userMgr.AddClaimsAsync(alice, new List<Claim>{
+            result = userMgr.AddClaimsAsync(alice, new List<Claim>
+                        {
                             new Claim(JwtClaimTypes.Name, "Alice Smith")
                         }).Result;
             if (!result.Succeeded)
@@ -50,6 +51,38 @@ public class SeedData
         else
         {
             Log.Debug("alice already exists");
+        }
+
+        var alex = userMgr.FindByNameAsync("alex").Result;
+        if (alex == null)
+        {
+            // If user doesn't exists, add it to the database
+            alex = new ApplicationUser
+            {
+                UserName = "alex",
+                Email = "AlexNeumann@email.com",
+                EmailConfirmed = true,
+            };
+            var result = userMgr.CreateAsync(alex, "Pass123$").Result;
+            if (!result.Succeeded)
+            {
+                throw new Exception(result.Errors.First().Description);
+            }
+
+            // Add claims to the user
+            result = userMgr.AddClaimsAsync(alex, new List<Claim>
+                        {
+                            new Claim(JwtClaimTypes.Name, "Alex Neumann")
+                        }).Result;
+            if (!result.Succeeded)
+            {
+                throw new Exception(result.Errors.First().Description);
+            }
+            Log.Debug("alex created, claims added to alex...");
+        }
+        else
+        {
+            Log.Debug("alex already exists");
         }
 
         var bob = userMgr.FindByNameAsync("bob").Result;

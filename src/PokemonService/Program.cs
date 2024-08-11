@@ -1,4 +1,5 @@
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using PokemonService;
 using PokemonService.Consumers;
@@ -37,11 +38,26 @@ builder.Services.AddMassTransit(x => {
     });
 });
 
+// Adding service for pokemon service to be able to authenticate user against the identity service through the access_token
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = builder.Configuration["IdentityServiceUrl"];
+
+        options.RequireHttpsMetadata = false; // Needed since identity server is running on Http
+
+        options.TokenValidationParameters.ValidateAudience = false;
+
+        // Tells JWT bearer middleware to look for and use a claim type of "username" to authorize user 
+        options.TokenValidationParameters.NameClaimType = "username";
+    });
+
 var app = builder.Build();
 
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
 app.MapGrpcService<GrpcListener>();
 
 try

@@ -9,7 +9,6 @@ public class CreatePokemonDto
     [Required]
     public int Price { get; set; }
     [Required]
-    public string Seller { get; set; }
     public string Type { get; set; }
     [Required]
     public int HealthPower { get; set; }

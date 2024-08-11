@@ -19,8 +19,4 @@
 		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.3" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.3" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Pages\Account\Register\" />
-	</ItemGroup>
 </Project>

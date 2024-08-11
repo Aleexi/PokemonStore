@@ -36,7 +36,7 @@ public class DbInitializer
                 HealthPower = 100,
                 Rarity = RarityEnum.Common,
                 Holographic = false,
-                Seller = "Alexander",
+                Seller = "bob",
                 Attacks = new List<Attack>
                 {
                     new Attack
@@ -60,7 +60,7 @@ public class DbInitializer
                 HealthPower = 150,
                 Rarity = RarityEnum.Legendary,
                 Holographic = true,
-                Seller = "Alexander",
+                Seller = "bob",
                 Attacks = new List<Attack>
                 {
                     new Attack
@@ -84,7 +84,7 @@ public class DbInitializer
                 HealthPower = 100,
                 Rarity = RarityEnum.Common,
                 Holographic = false,
-                Seller = "Alexander",
+                Seller = "bob",
                 Attacks = new List<Attack>
                 {
                     new Attack
