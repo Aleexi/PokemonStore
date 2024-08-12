@@ -33,7 +33,8 @@ public static class Config
                 {
                     new Secret("NotASecret".ToSha256())
                 },
-                AllowedGrantTypes = { GrantType.ResourceOwnerPassword }
+                AllowedGrantTypes = { GrantType.ResourceOwnerPassword },
+                AccessTokenLifetime = 3600 * 24 * 30 // 1 month Access Token lifetime
             }
         };
 }
