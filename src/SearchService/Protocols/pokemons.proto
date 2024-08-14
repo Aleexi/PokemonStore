@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+option csharp_namespace = "PokemonService";
+
+import "google/protobuf/wrappers.proto"; // Import the wrapper types
+
+
+// The pokemons service definition.
+service GrcpPokemon {
+    rpc GetPokemons (PokemonsRequest) returns (PokemonsResponse) {}
+    rpc GetPokemonById (PokemonRequest) returns (PokemonResponse) {}
+}
+
+// The request message containing the date for which pokemons after to retrieve
+message PokemonsRequest {
+    google.protobuf.StringValue date = 1; // Allows null values
+}
+
+message PokemonModel {
+    string id = 1;
+    string name = 2;
+    string seller = 3;
+    int32 price = 4;
+    string type = 5;
+    int32 healthpower = 6;
+    string rarity = 7;
+    bool holographic = 8;
+    string createdAt = 9; // Need to map this to a string and back to a DateTime in corresponding services that receive this response
+    string imageurl = 10;
+    repeated AttackModel attacks = 11;
+}
+
+message AttackModel {
+    string name = 1;
+    int32 damage = 2;
+}
+
+message PokemonsResponse {
+    repeated PokemonModel pokemons = 1;
+}
+
+message PokemonRequest {
+    string id = 1;
+}
+
+message PokemonResponse {
+    PokemonModel pokemon = 1;
+}
