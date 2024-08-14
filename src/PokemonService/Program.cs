@@ -1,9 +1,11 @@
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using PokemonService;
 using PokemonService.Consumers;
 using PokemonService.Services;
+using Polly;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -60,14 +62,9 @@ app.MapControllers();
 
 app.MapGrpcService<GrpcListener>();
 
-try
-{
-    DbInitializer.InitalizeDatabase(app);
-}
-catch (Exception e)
-{
-    
-    throw new Exception("Error initializing database", e);
-}
+// Custom policy to wait for Postgres to be ready to accept connections
+var retryPolicy = Policy.Handle<NpgsqlException>().WaitAndRetry(5, retryAttempt => TimeSpan.FromSeconds(10));
+
+retryPolicy.ExecuteAndCapture(() => DbInitializer.InitalizeDatabase(app));
 
 app.Run();

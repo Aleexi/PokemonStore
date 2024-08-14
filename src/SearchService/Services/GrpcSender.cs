@@ -1,4 +1,5 @@
 using AutoMapper;
+using Grpc.Core;
 using Grpc.Net.Client;
 using PokemonService;
 using SearchService.Entities;
@@ -19,6 +20,32 @@ public class GrpcSender
         _config = config;
         _mapper = mapper;
     }
+
+    private async Task WaitForChannelReady(GrpcChannel channel, CancellationToken cancellationToken)
+    {
+        var maxRetryCount = 5;
+        var retryCount = 0;
+        var delay = TimeSpan.FromSeconds(1);
+
+        while (channel.State != ConnectivityState.Ready && retryCount < maxRetryCount)
+        {
+            await channel.ConnectAsync(cancellationToken);
+            retryCount++;
+
+            if (channel.State == ConnectivityState.Ready)
+            {
+                break;
+            }
+            _logger.LogWarning($"Channel not ready, retrying ({retryCount}/{maxRetryCount})...");
+            await Task.Delay(delay);
+        }
+
+        if (channel.State != ConnectivityState.Ready)
+        {
+            throw new Exception("Failed to establish a connection to the Pokémon service.");
+        }
+    }
+   
     public Pokemon GetPokemon(string id)
     {
         _logger.LogInformation("Starting GrpcSender...");
@@ -54,12 +81,11 @@ public class GrpcSender
         }
         catch (Exception e)
         {
-
             throw new Exception("Error retrieving pokemon from Pokemon Service", e);
         }
     }
 
-    public List<Pokemon> GetPokemons(string date)
+    public async Task<List<Pokemon>> GetPokemons(string date)
     {
         _logger.LogInformation("Starting GrpcSender...");
 
@@ -70,6 +96,9 @@ public class GrpcSender
         {
             Date = date,
         };
+
+        // Wait until the channel is ready
+        await WaitForChannelReady(channel, new CancellationTokenSource().Token);
 
         try
         {

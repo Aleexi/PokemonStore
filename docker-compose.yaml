@@ -32,3 +32,75 @@ services:
       - 27017:27017
     volumes:
       - /var/lib/mongodb/data
+
+  pokemon-svc:
+    image: citadell/pokemon-svc:latest
+    build:
+      context: .
+      dockerfile: src/PokemonService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_URLS=http://+:5555
+      - RabbitMq__Host=rabbitmq
+      - RabbitMq__Username=guest
+      - RabbitMq__Password=guest
+      - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Database=pokemons-db;User Id=postgres;Password=postgres;
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      - Kestrel__Endpoints__Grpc__Url=http://+:5555
+      - Kestrel__Endpoints__WebApi__Protocols=Http1
+      - Kestrel__Endpoints__WebApi__Url=http://+:80
+      - IdentityServiceUrl=http://identity-svc
+    ports:
+      - 5001:80
+      - 5555:5555
+    depends_on:
+      - rabbitmq
+      - postgres
+  
+  search-svc:
+    image: citadell/search-svc:latest
+    build:
+      context: .
+      dockerfile: src/SearchService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - RabbitMq__Host=rabbitmq
+      - RabbitMq__Username=guest
+      - RabbitMq__Password=guest
+      - ConnectionStrings__MongoDbConnection=mongodb://root:root@mongodb
+      - PokemonServiceGrpcUrl=http://pokemon-svc:5555
+    ports:
+      - 5002:80
+    depends_on:
+      - rabbitmq
+      - mongodb
+      - pokemon-svc
+  
+  identity-svc:
+    image: citadell/identity-svc:latest
+    build:
+      context: .
+      dockerfile: src/IdentityService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Database=identity-db;User Id=postgres;Password=postgres;
+    ports:
+      - 5000:80
+    depends_on:
+      - postgres
+  
+  gateway-svc:
+    image: citadell/gateway-svc:latest
+    build:
+      context: .
+      dockerfile: src/GatewayService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - 6000:80
+   
+      

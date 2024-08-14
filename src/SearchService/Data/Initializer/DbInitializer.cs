@@ -36,7 +36,7 @@ public class DbInitializer
 
             var sender = scope.ServiceProvider.GetRequiredService<GrpcSender>();
 
-            var pokemons = sender.GetPokemons(null);
+            var pokemons = await sender.GetPokemons(null);
 
             if (pokemons.Count == 0) return;
 
