@@ -9,3 +9,5 @@
 ### IdentityService (Duende Identity Server - SSO) - Stores and manages users
 
 ### GatewayService - Acts as a gateway for other services 
+
+### CartService - Not Implemented Yet

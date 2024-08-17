@@ -29,7 +29,6 @@ public class DbInitializer
                : "No pokemons exists, retrieving all pokemons from PokemonService...");
 
         // Retrieve all pokemons from Pokemon Service 
-        
         if (count == 0)
         {   
             using var scope = app.Services.CreateScope();
