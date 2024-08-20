@@ -1,5 +1,4 @@
-﻿
-namespace CartService.DTOs.ReturnDtos;
+﻿namespace CartService.DTOs.ReturnDtos;
 
 public class CartDto
 {

@@ -8,14 +8,6 @@ public class DbInitializer
 {
     public static async Task InitializeDatabase(WebApplication app)
     {
-        /* 
-        var count = await DB.CountAsync<Cart>();
-
-        if (count > 0)
-        {
-            Console.WriteLine("There already exists carts in the database, returning...");
-        }
-        */
 
         // Connect to carts database
         await DB.InitAsync("carts-db", 
