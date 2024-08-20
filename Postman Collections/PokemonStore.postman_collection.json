@@ -1,0 +1,1734 @@
+{
+	"info": {
+		"_postman_id": "0a987492-ee9a-4814-9c4d-d47f28389414",
+		"name": "PokemonStore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27953770"
+	},
+	"item": [
+		{
+			"name": "Pokemon Service",
+			"item": [
+				{
+					"name": "Get All Pokemons",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test('Status code is 200', function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Should be 3 items', function() {\r",
+									"    pm.expect(jsonData.length).to.equal(3);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{pokemonService}}/api/pokemons",
+							"host": [
+								"{{pokemonService}}"
+							],
+							"path": [
+								"api",
+								"pokemons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Mew Pokemon",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test('Status code is 200', function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Pokemon is Mew', function() {\r",
+									"    pm.expect(jsonData.id).to.eq('afbee524-5972-4075-8800-7d1f9d7b0a0c');\r",
+									"    pm.expect(jsonData.name).to.eq('Mew');\r",
+									"    pm.expect(jsonData.type).to.eq('All');\r",
+									"    pm.expect(jsonData.seller).to.eq('Alexander');\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{pokemonService}}/api/pokemons/afbee524-5972-4075-8800-7d1f9d7b0a0c",
+							"host": [
+								"{{pokemonService}}"
+							],
+							"path": [
+								"api",
+								"pokemons",
+								"afbee524-5972-4075-8800-7d1f9d7b0a0c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new Pokemon",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains expected properties\", function () {\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('id');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('name');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('price');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('type');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('healthPower');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('rarity');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('holographic');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('createdAt');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('imageUrl');\r",
+									"    pm.expect(jsonData.attacks).length(2);\r",
+									"});\r",
+									"\r",
+									"pm.collectionVariables.set(\"createdPokemonId\", jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Gengar\",\r\n    \"Price\": 600,\r\n    \"Type\": \"Ghost\",\r\n    \"healthpower\": 200,\r\n    \"rarity\": \"Rare\",\r\n    \"Holographic\": true,\r\n    \"attacks\": [\r\n        {\r\n            \"name\": \"Ghost Blast\",\r\n            \"damage\": 150\r\n        },\r\n        {\r\n            \"name\": \"Test\",\r\n            \"damage\": 100\r\n        }\r\n    ],\r\n    \"imageUrl\": \"https://cdn.pixabay.com/photo/2020/07/24/03/12/gengar-5432819_1280.png\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{pokemonService}}/api/pokemons",
+							"host": [
+								"{{pokemonService}}"
+							],
+							"path": [
+								"api",
+								"pokemons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update the created Pokemon",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"price\": 1002\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{pokemonService}}/api/pokemons/{{createdPokemonId}}",
+							"host": [
+								"{{pokemonService}}"
+							],
+							"path": [
+								"api",
+								"pokemons",
+								"{{createdPokemonId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Pokemon",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{pokemonService}}/api/pokemons/{{createdPokemonId}}",
+							"host": [
+								"{{pokemonService}}"
+							],
+							"path": [
+								"api",
+								"pokemons",
+								"{{createdPokemonId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Delete Pokemon - Shouldve Return 404 (Not Found)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{pokemonService}}/api/pokemons/{{createdPokemonId}}",
+							"host": [
+								"{{pokemonService}}"
+							],
+							"path": [
+								"api",
+								"pokemons",
+								"{{createdPokemonId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Search Service",
+			"item": [
+				{
+					"name": "Get all pokemons",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json()\r",
+									"\r",
+									"pm.test('Status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Contains 3 pokemons', function () {\r",
+									"    pm.expect(jsonData.result).to.have.length(3)\r",
+									"});\r",
+									"\r",
+									"pm.test('Contains correct properties', function () {\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('result')\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('totalNumberPokemons')\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('numberOfPages')\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{searchService}}/api/search",
+							"host": [
+								"{{searchService}}"
+							],
+							"path": [
+								"api",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all pokemons with Rarity = Common",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test('Status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('All pokemons should be common', function() {\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('result');\r",
+									"    \r",
+									"\r",
+									"    pm.expect(jsonData.result.forEach(function (pokemon) {\r",
+									"        pm.expect(pokemon.rarity).to.equal('Common');\r",
+									"    }))\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{searchService}}/api/search?rarity=Legendary",
+							"host": [
+								"{{searchService}}"
+							],
+							"path": [
+								"api",
+								"search"
+							],
+							"query": [
+								{
+									"key": "rarity",
+									"value": "Legendary"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all pokemons with Pagesize & PageNumer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check healthpower is 100\", function () {\r",
+									"    \r",
+									"    pm.expect(jsonData.result.forEach(function (pokemon) {\r",
+									"        pm.expect(pokemon).to.haveOwnProperty('healthPower');\r",
+									"        pm.expect(pokemon.healthPower).to.equal(100);\r",
+									"    }));\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{searchService}}/api/search?pagesize=2&pagenumber=2",
+							"host": [
+								"{{searchService}}"
+							],
+							"path": [
+								"api",
+								"search"
+							],
+							"query": [
+								{
+									"key": "pagesize",
+									"value": "2"
+								},
+								{
+									"key": "pagenumber",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all pokemons with Alexander as Seller",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test('Response contains only Seller name = Alexander', function () {\r",
+									"    pm.expect(jsonData.result.forEach(function (pokemon) {\r",
+									"        pm.expect(pokemon.seller).to.equal('Alexander')\r",
+									"    }))\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{searchService}}/api/search?seller=Alexander",
+							"host": [
+								"{{searchService}}"
+							],
+							"path": [
+								"api",
+								"search"
+							],
+							"query": [
+								{
+									"key": "seller",
+									"value": "Alexander"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Identity Service",
+			"item": [
+				{
+					"name": "Get Alex Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();\r",
+									"\r",
+									"pm.collectionVariables.set(\"AlexToken\", response.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "alex",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Pass123$",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "postman",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "NotASecret",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "pokemonApp openid profile",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{identityService}}/connect/token",
+							"host": [
+								"{{identityService}}"
+							],
+							"path": [
+								"connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Bob Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();\r",
+									"\r",
+									"pm.collectionVariables.set(\"BobToken\", response.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "bob",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Pass123$",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "pokemonApp openid profile",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "postman",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "NotASecret",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{identityService}}/connect/token",
+							"host": [
+								"{{identityService}}"
+							],
+							"path": [
+								"connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AlexToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{identityService}}/connect/userinfo",
+							"host": [
+								"{{identityService}}"
+							],
+							"path": [
+								"connect",
+								"userinfo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create New Pokemon - No Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status to have 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Authentication Testing\",\r\n    \"Price\": 600,\r\n    \"Type\": \"Ghost\",\r\n    \"healthpower\": 200,\r\n    \"rarity\": \"Rare\",\r\n    \"Holographic\": true,\r\n    \"attacks\": [\r\n        {\r\n            \"name\": \"Ghost Blast\",\r\n            \"damage\": 150\r\n        },\r\n        {\r\n            \"name\": \"Test\",\r\n            \"damage\": 100\r\n        }\r\n    ],\r\n    \"imageUrl\": \"https://cdn.pixabay.com/photo/2020/07/24/03/12/gengar-5432819_1280.png\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{pokemonService}}/api/pokemons",
+							"host": [
+								"{{pokemonService}}"
+							],
+							"path": [
+								"api",
+								"pokemons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new Pokemon As Alex",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status to have 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Body to have name - Authentication Test\", function () {\r",
+									"    pm.expect(jsonData.name).to.equal(\"Authentication Testing\");\r",
+									"    pm.expect(jsonData.seller).to.equal(\"alex\");\r",
+									"})\r",
+									"\r",
+									"pm.collectionVariables.set(\"createdPokemonId\", jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AlexToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Authentication Testing\",\r\n    \"Price\": 600,\r\n    \"Type\": \"Ghost\",\r\n    \"healthpower\": 200,\r\n    \"rarity\": \"Rare\",\r\n    \"Holographic\": true,\r\n    \"attacks\": [\r\n        {\r\n            \"name\": \"Ghost Blast\",\r\n            \"damage\": 150\r\n        },\r\n        {\r\n            \"name\": \"Test\",\r\n            \"damage\": 100\r\n        }\r\n    ],\r\n    \"imageUrl\": \"https://cdn.pixabay.com/photo/2020/07/24/03/12/gengar-5432819_1280.png\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{pokemonService}}/api/pokemons",
+							"host": [
+								"{{pokemonService}}"
+							],
+							"path": [
+								"api",
+								"pokemons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update the created Pokemon as Alex",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AlexToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"price\": 2000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{pokemonService}}/api/pokemons/{{createdPokemonId}}",
+							"host": [
+								"{{pokemonService}}"
+							],
+							"path": [
+								"api",
+								"pokemons",
+								"{{createdPokemonId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update the created Pokemon as Bob",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status to have 403\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BobToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"price\": 3000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{pokemonService}}/api/pokemons/{{createdPokemonId}}",
+							"host": [
+								"{{pokemonService}}"
+							],
+							"path": [
+								"api",
+								"pokemons",
+								"{{createdPokemonId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Pokemon as Alex",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AlexToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{pokemonService}}/api/pokemons/{{createdPokemonId}}",
+							"host": [
+								"{{pokemonService}}"
+							],
+							"path": [
+								"api",
+								"pokemons",
+								"{{createdPokemonId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gateway Service",
+			"item": [
+				{
+					"name": "Get Bob Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();\r",
+									"\r",
+									"pm.collectionVariables.set(\"BobToken\", response.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "client_id",
+									"value": "postman",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "NotASecret",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "bob",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Pass123$",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "pokemonApp openid profile",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{identityService}}/connect/token",
+							"host": [
+								"{{identityService}}"
+							],
+							"path": [
+								"connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Alex Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();\r",
+									"\r",
+									"pm.collectionVariables.set(\"AlexToken\", response.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "client_id",
+									"value": "postman",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "NotASecret",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "alex",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Pass123$",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "pokemonApp openid profile",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{identityService}}/connect/token",
+							"host": [
+								"{{identityService}}"
+							],
+							"path": [
+								"connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All pokemons",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test('Status code is 200', function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Result includes results, pagecount, totalcount properties and length of 3 pokemons', function() {\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('result');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('numberOfPages');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('totalNumberPokemons');\r",
+									"\r",
+									"    pm.expect(jsonData.result).to.have.lengthOf(3);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatewayService}}/search",
+							"host": [
+								"{{gatewayService}}"
+							],
+							"path": [
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all pokemons with rarity of Common",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test('Status code is 200', function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"pm.test('Result includes results, pagecount and totalcount properties', function() {\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('result');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('numberOfPages');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('totalNumberPokemons');\r",
+									"\r",
+									"    pm.expect(jsonData.result).to.have.lengthOf(2);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatewayService}}/search?rarity=Common",
+							"host": [
+								"{{gatewayService}}"
+							],
+							"path": [
+								"search"
+							],
+							"query": [
+								{
+									"key": "rarity",
+									"value": "Common"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new pokemon as Alex",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains expected properties\", function () {\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('id');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('name');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('price');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('type');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('healthPower');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('rarity');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('holographic');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('createdAt');\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('imageUrl');\r",
+									"    pm.expect(jsonData.attacks).length(2);\r",
+									"});\r",
+									"\r",
+									"pm.collectionVariables.set(\"createdPokemonId\", jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AlexToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Gengar\",\r\n    \"Price\": 600,\r\n    \"Type\": \"Ghost\",\r\n    \"healthpower\": 200,\r\n    \"rarity\": \"Rare\",\r\n    \"Holographic\": true,\r\n    \"attacks\": [\r\n        {\r\n            \"name\": \"Ghost Blast\",\r\n            \"damage\": 150\r\n        },\r\n        {\r\n            \"name\": \"Test\",\r\n            \"damage\": 100\r\n        }\r\n    ],\r\n    \"imageUrl\": \"https://cdn.pixabay.com/photo/2020/07/24/03/12/gengar-5432819_1280.png\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gatewayService}}/pokemons",
+							"host": [
+								"{{gatewayService}}"
+							],
+							"path": [
+								"pokemons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pokemon by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test('Status code is 200', function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Item has correct make and model', function() {\r",
+									"    pm.expect(jsonData.type).to.eq('Ghost');\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatewayService}}/pokemons/{{createdPokemonId}}",
+							"host": [
+								"{{gatewayService}}"
+							],
+							"path": [
+								"pokemons",
+								"{{createdPokemonId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update the created pokemon as Alex",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AlexToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"price\": 123123\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gatewayService}}/pokemons/{{createdPokemonId}}",
+							"host": [
+								"{{gatewayService}}"
+							],
+							"path": [
+								"pokemons",
+								"{{createdPokemonId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update the created pokemon as Bob",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 403', function() {\r",
+									"    pm.response.to.have.status(403);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BobToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"price\": 123\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gatewayService}}/pokemons/{{createdPokemonId}}",
+							"host": [
+								"{{gatewayService}}"
+							],
+							"path": [
+								"pokemons",
+								"{{createdPokemonId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Updated Pokemon by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test('Status code is 200', function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatewayService}}/pokemons/{{createdPokemonId}}",
+							"host": [
+								"{{gatewayService}}"
+							],
+							"path": [
+								"pokemons",
+								"{{createdPokemonId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Pokemon as Alex",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AlexToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{gatewayService}}/pokemons/{{createdPokemonId}}",
+							"host": [
+								"{{gatewayService}}"
+							],
+							"path": [
+								"pokemons",
+								"{{createdPokemonId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Deleted Pokemon return 404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 404', function() {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gatewayService}}/pokemons/{{createdPokemonId}}",
+							"host": [
+								"{{gatewayService}}"
+							],
+							"path": [
+								"pokemons",
+								"{{createdPokemonId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart Service",
+			"item": [
+				{
+					"name": "Get all carts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test('Return 200 OK', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('3 carts', function () {\r",
+									"    pm.expect(jsonData.length).to.equal(3);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{cartService}}/api/carts",
+							"host": [
+								"{{cartService}}"
+							],
+							"path": [
+								"api",
+								"carts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get cart alex - not auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Returns Not Authorizedt', function() {\r",
+									"    pm.response.to.have.status(401);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{cartService}}/api/carts/alex",
+							"host": [
+								"{{cartService}}"
+							],
+							"path": [
+								"api",
+								"carts",
+								"alex"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Alex token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "postman",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "NotASecret",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "alex",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Pass123$",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{identityService}}/connect/token",
+							"host": [
+								"{{identityService}}"
+							],
+							"path": [
+								"connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get cart alex - auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Contain buyer property and is alex\", function() {\r",
+									"    pm.expect(jsonData).to.haveOwnProperty('buyer');\r",
+									"    pm.expect(jsonData.buyer).to.equal('alex');\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AlexToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5003/api/carts/alex",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"api",
+								"carts",
+								"alex"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get alex cart with bob token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Return forbidden', function() {\r",
+									"    pm.response.to.have.status(403);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BobToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{cartService}}/api/carts/alex",
+							"host": [
+								"{{cartService}}"
+							],
+							"path": [
+								"api",
+								"carts",
+								"alex"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "createdPokemonId",
+			"value": ""
+		},
+		{
+			"key": "pokemonService",
+			"value": "http://localhost:5001",
+			"type": "string"
+		},
+		{
+			"key": "searchService",
+			"value": "http://localhost:5002",
+			"type": "string"
+		},
+		{
+			"key": "identityService",
+			"value": "http://localhost:5000",
+			"type": "string"
+		},
+		{
+			"key": "AlexToken",
+			"value": ""
+		},
+		{
+			"key": "BobToken",
+			"value": ""
+		},
+		{
+			"key": "gatewayService",
+			"value": "http://localhost:6000",
+			"type": "string"
+		},
+		{
+			"key": "cartService",
+			"value": "http://localhost:5003",
+			"type": "string"
+		}
+	]
+}

@@ -34,6 +34,8 @@ public class CartsController : ControllerBase
 
         // Need to authenticate user with Buyer parameter
         // Add Jwt to be able to use identity correctly
+        
+        if (Buyer != User.Identity.Name) return Forbid();
 
         var cart = await DB.Find<Cart>().Match(x => x.Buyer == Buyer).ExecuteFirstAsync();
 
