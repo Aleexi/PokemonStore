@@ -110,4 +110,63 @@ public class CartsController : ControllerBase
             }
         }
     }
+
+    [HttpPut]
+    [Authorize]
+    public async Task<ActionResult<Cart>> UpdatePokemonInCart([FromBody] UpdatePokemonDto updatePokemonDto)
+    {
+        if (User.Identity.Name != updatePokemonDto.Buyer) return BadRequest("Buyer and Identity is not the same...");
+
+        // Check if user has cart
+        var cart = await DB.Find<Cart>().Match(x => x.Buyer == updatePokemonDto.Buyer).ExecuteFirstAsync();
+
+        if (cart == null) return BadRequest("User doesn't have a cart in the cartService...");
+
+        // Check if pokemon is in cart
+        var pokemon = cart.pokemons.FirstOrDefault(x => x.ID == updatePokemonDto.Id.ToString());
+
+        // If pokemon doesn't exists
+        if (pokemon == null) return BadRequest("Pokemon didn't exist in cart, returning...");
+
+        if (updatePokemonDto.UpdatedQuantity < pokemon.Quantity)
+        {
+            cart.TotalPrice -= (pokemon.Quantity - updatePokemonDto.UpdatedQuantity) * pokemon.Price;
+        }
+        else
+        {
+            cart.TotalPrice += (updatePokemonDto.UpdatedQuantity - pokemon.Quantity) * pokemon.Price;
+        }
+
+        pokemon.Quantity = updatePokemonDto.UpdatedQuantity;
+
+        await DB.SaveAsync(cart);
+
+        return Ok(_mapper.Map<CartDto>(cart));
+    }
+
+    [HttpDelete]
+    [Authorize]
+    public async Task<ActionResult> DeletePokemonInCart([FromBody] DeletePokemonDto deletePokemonDto)
+    {
+        if (User.Identity.Name != deletePokemonDto.Buyer) return BadRequest("User identity and buyer name not the same...");
+
+        // Check if user has cart
+        Cart cart = await DB.Find<Cart>().Match(x => x.Buyer == deletePokemonDto.Buyer).ExecuteFirstAsync();
+
+        if (cart == null) return BadRequest($"Cart for user {deletePokemonDto.Buyer} doesn't exists");
+
+        // Check if pokemon exists within cart
+
+        Pokemon pokemon = cart.pokemons.FirstOrDefault(x => x.ID == deletePokemonDto.Id.ToString());
+
+        if (pokemon == null) return BadRequest("Pokemon didn't exists in cart");
+
+        cart.TotalPrice -= pokemon.Quantity * pokemon.Price;
+
+        cart.pokemons.Remove(pokemon);
+
+        await cart.SaveAsync();
+
+        return Ok();
+    }
 }
