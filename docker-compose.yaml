@@ -84,7 +84,7 @@ services:
       context: .
       dockerfile: src/IdentityService/Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Database=identity-db;User Id=postgres;Password=postgres;
     ports:
@@ -102,5 +102,21 @@ services:
       - ASPNETCORE_URLS=http://+:80
     ports:
       - 6000:80
-   
-      
+  
+  cart-svc:
+    image: citadell/cart-svc:latest
+    build:
+      context: .
+      dockerfile: src/CartService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__MongoDbConnection=mongodb://root:root@mongodb
+      - IdentityServiceUrl=http://identity-svc
+      - PokemonServiceUrlGrpc=http://pokemon-svc:5555
+    ports:
+      - 5003:80
+    depends_on:
+      - mongodb
+      - rabbitmq
+      - pokemon-svc

@@ -28,11 +28,12 @@ RUN dotnet restore PokemonStore.sln
 # ----------------------------------------------------------------------------------------------------
 
 # Copy over (service/app) files
-COPY src/PokemonService src/PokemonService
+COPY src/CartService src/CartService
 COPY src/Contracts src/Contracts
 
-# Generate published version of the PokemonService
-WORKDIR /app/src/PokemonService
+
+# Generate published version of the CartService
+WORKDIR /app/src/CartService
 RUN dotnet publish -c Release -o /app/src/out
 
 # Build runtime image, smaller image than sdk which is not needed for final image 
@@ -41,7 +42,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 # Change Working directory in runtime image
 WORKDIR /app
 
-# Copy published version of Pokemon Service located in build in /app/src/out into our runtime image and directory /app
+# Copy published version of Cart Service located in build in /app/src/out into our runtime image and directory /app
 COPY --from=build /app/src/out .
 
-ENTRYPOINT [ "dotnet", "PokemonService.dll" ]
+ENTRYPOINT [ "dotnet", "CartService.dll" ]

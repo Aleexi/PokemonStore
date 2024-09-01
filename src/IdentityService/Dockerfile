@@ -20,6 +20,7 @@ COPY src/PokemonService/PokemonService.csproj src/PokemonService/PokemonService.
 COPY src/SearchService/SearchService.csproj src/SearchService/SearchService.csproj
 COPY src/IdentityService/IdentityService.csproj src/IdentityService/IdentityService.csproj
 COPY src/GatewayService/GatewayService.csproj src/GatewayService/GatewayService.csproj
+COPY src/CartService/CartService.csproj src/CartService/CartService.csproj
 COPY src/Contracts/Contracts.csproj src/Contracts/Contracts.csproj
 
 RUN dotnet restore PokemonStore.sln
