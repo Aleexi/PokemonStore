@@ -10,4 +10,4 @@
 
 ### GatewayService - Acts as a gateway for other services 
 
-### CartService - Not Implemented Yet
+### CartService - Contains CRUD operations for the cart functionality
