@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using PokemonService;
-using PokemonService.Consumers;
 using PokemonService.Services;
 using Polly;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<PokemonDbContext>(options => {
@@ -55,6 +55,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
+
+// Middleware
 
 app.UseAuthentication();
 app.UseAuthorization();
