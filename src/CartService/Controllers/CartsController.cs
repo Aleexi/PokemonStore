@@ -70,10 +70,11 @@ public class CartsController : ControllerBase
             // If not cart exists, create it, add pokemon and save it 
             Console.WriteLine($"Creating Cart for {User.Identity.Name}...");
 
-            cart = new Cart();
-            cart.Buyer = User.Identity.Name;
-            cart.pokemons = new List<Pokemon>{ pokemon };
-            cart.TotalPrice = pokemon.Quantity * pokemon.Price;
+            cart = new Cart {
+                Buyer = User.Identity.Name,
+                pokemons = new List<Pokemon> { pokemon },
+                TotalPrice = pokemon.Quantity * pokemon.Price
+            };
 
             await DB.SaveAsync(cart);
             return CreatedAtAction(nameof(GetCartByName), new { cart.ID }, _mapper.Map<CartDto>(cart));
