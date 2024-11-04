@@ -10,4 +10,4 @@
 
 ### GatewayService - Acts as a gateway for other services 
 
-### CartService - Contains CRUD operations for the cart functionality
+### CartService - Provides functionality to add, update, delete Pokemons to/from the Cart
